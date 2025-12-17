@@ -1,0 +1,29 @@
+<svg width="1000" height="1000" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="burst" cx="0.5" cy="0.5" r="0.7">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.35"/>
+      <stop offset="40%" stop-color="#14b8a6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#02030b" stop-opacity="0.85"/>
+    </radialGradient>
+    <linearGradient id="rays" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="25" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1000" height="1000" fill="#02030b"/>
+  <g filter="url(#glow)">
+    <circle cx="500" cy="420" r="220" fill="url(#burst)" />
+  </g>
+  <rect width="1000" height="1000" fill="url(#rays)" />
+  <circle cx="500" cy="400" r="80" fill="#a5b4fc" opacity="0.6"/>
+  <circle cx="640" cy="520" r="60" fill="#34d399" opacity="0.4"/>
+  <circle cx="360" cy="580" r="50" fill="#22d3ee" opacity="0.45"/>
+  <circle cx="520" cy="300" r="40" fill="#f97316" opacity="0.3"/>
+</svg>
