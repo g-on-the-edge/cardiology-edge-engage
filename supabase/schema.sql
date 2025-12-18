@@ -226,6 +226,50 @@ CREATE TABLE public.notification_preferences (
   UNIQUE(user_id, type)
 );
 
+-- OAuth authorization codes
+CREATE TABLE public.oauth_authorizations (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+  client_id TEXT NOT NULL,
+  auth_code TEXT NOT NULL UNIQUE,
+  redirect_uri TEXT NOT NULL,
+  scope TEXT NOT NULL,
+  used BOOLEAN DEFAULT FALSE,
+  used_at TIMESTAMPTZ,
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- OAuth access tokens
+CREATE TABLE public.oauth_tokens (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+  client_id TEXT NOT NULL,
+  access_token TEXT NOT NULL UNIQUE,
+  refresh_token TEXT NOT NULL UNIQUE,
+  scope TEXT NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL,
+  revoked BOOLEAN DEFAULT FALSE,
+  revoked_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- OAuth client applications
+CREATE TABLE public.oauth_clients (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  client_id TEXT NOT NULL UNIQUE,
+  client_secret TEXT NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT,
+  redirect_uris TEXT[] NOT NULL,
+  allowed_scopes TEXT[] DEFAULT ARRAY['read'],
+  logo_url TEXT,
+  website_url TEXT,
+  created_by UUID REFERENCES public.users(id),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Scorecard value history
 CREATE TABLE public.scorecard_history (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
