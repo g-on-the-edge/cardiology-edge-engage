@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Resource Model Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Libre Franklin', sans-serif;
+        }
+        @media print {
+            body { -webkit-print-color-adjust: exact; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Page 1 -->
+    <div class="container mx-auto p-6 md:p-10 max-w-5xl bg-white shadow-2xl rounded-lg my-10">
+
+        <!-- Header -->
+        <header class="text-center border-b-2 border-[#C41F3E] pb-6 mb-8">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#1B365D]">Clinical Resource Model</h1>
+            <p class="text-2xl md:text-3xl text-[#C41F3E] font-bold mt-2 uppercase italic">How it Works - Summary</p>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- What is it? -->
+            <section class="mb-10">
+                <p class="text-base text-gray-700 leading-relaxed">
+                    The Clinical Resource Model is a data-driven tool designed to precisely quantify the <strong>staff, equipment, and space</strong> required to operate the service line. It uses CPT codes as the fundamental building blocks to represent every piece of work, providing a foundational blueprint for understanding our current operational needs and for strategically planning for the future.
+                </p>
+            </section>
+            
+            <div class="flex flex-col md:flex-row gap-10">
+                <!-- Left Column -->
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 flex flex-col md:w-1/2">
+                     <h2 class="text-2xl font-bold text-[#1B365D] mb-6 text-center">How It Works</h2>
+                    <!-- The Calculation Engine -->
+                    <div class="flex flex-col flex-grow">
+                         <div class="text-center p-4 mb-6 bg-red-50 border-2 border-dashed border-[#C41F3E] rounded-lg">
+                            <div class="flex flex-col items-center justify-center space-y-1">
+                                <p class="text-3xl font-semibold text-gray-600">Time/Resource</p>
+                                <p class="text-6xl font-bold text-[#1B365D]">&times;</p>
+                                <p class="text-3xl font-semibold text-gray-600">Volume</p>
+                                <p class="text-6xl font-bold text-[#C41F3E]">+</p>
+                                <p class="text-3xl font-semibold text-gray-700">Contingency</p>
+                            </div>
+                            <div class="flex justify-center items-center my-3">
+                                <p class="text-6xl font-bold text-[#1B365D]">=</p>
+                            </div>
+                           <div class="bg-[#C41F3E] text-white py-3 px-4 rounded-md w-full">
+                                <p class="text-2xl font-bold">Total Resource Need</p>
+                           </div>
+                        </div>
+
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700 mt-auto">
+                            <li><strong>Process Mapping:</strong> Link CPT code to a clinical process.</li>
+                            <li><strong>Time Measurement:</strong> Measure resource time for that process.</li>
+                            <li><strong>Volume Application:</strong> Multiply time by annual CPT volume.</li>
+                            <li><strong>Contingency Factoring:</strong> Add a buffer for unpredictability.</li>
+                            <li><strong>Resource Aggregation:</strong> Total the time for each resource type.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="flex flex-col space-y-8 md:w-1/2">
+                    <!-- Quantifying Workflows -->
+                    <section class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-6 text-center flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#007FA3] mr-2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            Quantifying Different Workflows
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-md shadow-sm border">
+                                <h4 class="font-semibold text-[#1B365D]">Linear Workflows (e.g., Physicians)</h4>
+                                <p class="text-sm text-gray-600 mt-1">Scheduled work like appointments and procedures easily tied to specific CPT codes.</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-md shadow-sm border">
+                                <h4 class="font-semibold text-[#00685E]">Request-Driven Workflows (e.g., Nursing)</h4>
+                                <p class="text-sm text-gray-600 mt-1">Non-linear work like patient calls and inbox messages, quantified by request patterns.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Two Views -->
+                    <section>
+                        <h2 class="text-2xl font-bold text-[#1B365D] mb-6 text-center">Two Strategic Views</h2>
+                        <div class="space-y-6">
+                            <div class="bg-white p-6 rounded-lg border-2 border-[#1B365D] shadow-lg">
+                                <h3 class="text-xl font-bold text-[#1B365D] mb-3">Current State Model</h3>
+                                <p class="text-gray-700 mb-4">A data-backed snapshot of our operations as they exist today, including current workflows and any inefficiencies.</p>
+                                <p class="font-semibold italic text-[#1B365D] bg-[#EFEFEF] p-3 rounded-md">Answers: "What does it take to run the service line right now?"</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg border-2 border-[#007FA3] shadow-lg">
+                                <h3 class="text-xl font-bold text-[#007FA3] mb-3">Future State Model</h3>
+                                <p class="text-gray-700 mb-4">An aspirational redesign based on staff interviews, observations, and best practices to create an optimized, ideal state.</p>
+                                <p class="font-semibold italic text-[#007FA3] bg-[#EFEFEF] p-3 rounded-md">Answers: "What resources would we need if we operated in an ideal state?"</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- What it Delivers (Full Width) -->
+            <section class="bg-[#1B365D] text-white p-8 rounded-lg mt-12">
+                <h2 class="text-2xl font-bold mb-6 text-center">What The Resource Model Delivers</h2>
+                <div class="grid md:grid-cols-3 gap-6 text-center">
+                    <div class="bg-[#2a4a7a] p-4 rounded-md">
+                        <h4 class="text-lg font-semibold">Precise Quantification</h4>
+                        <p class="text-sm text-gray-200">Know exactly how many staff, what equipment, and how much space is needed to meet patient demand.</p>
+                    </div>
+                    <div class="bg-[#2a4a7a] p-4 rounded-md">
+                        <h4 class="text-lg font-semibold">Data-Driven Decisions</h4>
+                        <p class="text-sm text-gray-200">Replace assumptions with objective data for confident decisions on hiring, capital, and space.</p>
+                    </div>
+                    <div class="bg-[#2a4a7a] p-4 rounded-md">
+                        <h4 class="text-lg font-semibold">Dynamic Scenario Planning</h4>
+                        <p class="text-sm text-gray-200">Forecast future needs by modeling growth, backlog reduction, or new care strategies.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Page 2 Content -->
+        <div class="page-break mt-12 pt-8 border-t-4 border-double border-[#C41F3E]">
+            <header class="text-center border-b-2 border-gray-400 pb-6 mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Detailed Model Breakdown</h1>
+                <p class="text-2xl md:text-3xl text-[#C41F3E] font-bold mt-2 uppercase italic">How it Works - More Detail</p>
+            </header>
+
+            <main>
+                <section class="mb-8">
+                    <h2 class="text-2xl font-bold text-[#1B365D] mb-4">Connecting Work to Resources</h2>
+                    
+                    <!-- Visual Graphic for Resource Connection -->
+                    <div class="my-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex items-center justify-center flex-wrap gap-x-4 gap-y-6">
+                            <!-- Cloud of Boxes (Left) -->
+                            <div class="p-4 border-2 border-dashed border-[#007FA3] rounded-lg flex-1 min-w-[280px]">
+                                <div class="flex flex-wrap gap-2 justify-center">
+                                    <div class="p-2 bg-blue-100 text-blue-800 text-sm rounded-md">Provider Work</div>
+                                    <div class="p-2 bg-blue-100 text-blue-800 text-sm rounded-md">Facilities</div>
+                                    <div class="p-2 bg-blue-100 text-blue-800 text-sm rounded-md">Technical Work</div>
+                                    <div class="p-2 bg-blue-100 text-blue-800 text-sm rounded-md">Equipment</div>
+                                    <div class="p-2 bg-blue-100 text-blue-800 text-sm rounded-md">Staff Support</div>
+                                    <div class="p-2 bg-blue-100 text-blue-800 text-sm rounded-md">Space</div>
+                                    <div class="p-2 bg-blue-100 text-blue-800 text-sm rounded-md">Associated Work</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Arrow and Text (Center) -->
+                            <div class="text-center">
+                                <svg class="w-16 h-16 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                                <p class="text-sm text-gray-600 font-semibold mt-1">Filtered list of CPT codes</p>
+                            </div>
+    
+                            <!-- Piece of Work Box (Right) -->
+                            <div class="p-4 bg-[#C41F3E] text-white rounded-lg shadow text-center">
+                                <p class="font-bold">Piece of Work</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        The model's foundation is the complete list of CPT codes performed across the service line. Each CPT code is mapped to the specific resources required for its execution: staff time, equipment, and space.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed mb-6">
+                        A key strength of this model is its flexibility in defining a complete "piece of work," like a patient appointment or a complex procedure. In some cases, this involves aggregating multiple CPT codes from various teams. In other instances, a single CPT code can serve as a proxy to represent the entire scope of work, even if it doesn't traditionally describe every component. For example, a complex multi-disciplinary procedure involves work from both surgical teams and interventional specialists. The model is designed to capture all this associated work—whether triggered by multiple CPTs or a single representative one—to ensure the full resource picture is accurately represented.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed mb-6 italic">
+                        Note: sometimes it may be necessary to pull in additional data pieces to supplement CPT codes (in basket messages, etc).
+                    </p>
+                    
+                    <div class="mt-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Quantifying Different Workflows</h3>
+                        <p class="text-gray-700 leading-relaxed">The model also accounts for the different nature of clinical work.</p>
+                        <ul class="list-disc list-inside mt-4 space-y-3">
+                            <li><strong>Linear Workflows:</strong> For roles like physicians, work is often linear and scheduled (e.g., patient appointments, planned procedures, reading scans). This work is more easily tied directly to CPT codes.</li>
+                            <li><strong>Request-Driven Workflows:</strong> In contrast, roles like nursing often involve non-linear, request-driven work. Their day is a dynamic mix of responding to patient calls, managing inbox messages, and coordinating with providers. The model quantifies this work by analyzing patterns and volumes of these requests, ensuring this less predictable but critical work is accurately resourced.</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-bold text-[#1B365D] mb-4">Two Views: Current State vs. Future State</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">1. Current State Model</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                This model provides a data-backed snapshot of our operations as they exist today. It quantifies the resources needed based on our current workflows, roles, and processes, including any existing inefficiencies. For example, if nurses are currently performing tasks that could be delegated, the Current State Model accurately reflects the nursing time required for those tasks under the present design. It answers the question: <strong>"What does it take to run the service line right now?"</strong>
+                            </p>
+                             <div class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                                <h4 class="font-semibold text-center text-gray-700 mb-4">Example: Current State Nursing Work</h4>
+                                <div class="space-y-3 text-sm">
+                                    <!-- Phone Calls -->
+                                    <div class="grid grid-cols-5 gap-2 items-center">
+                                        <span class="col-span-1 font-medium">Phone Calls:</span>
+                                        <span class="col-span-1 text-center">22/day</span>
+                                        <span class="col-span-1 text-center">&times; 8 min</span>
+                                        <span class="col-span-1 text-center">&times; 22 days</span>
+                                        <span class="col-span-1 text-right font-bold">= 64.5 hours</span>
+                                    </div>
+                                    <!-- In-Basket -->
+                                    <div class="grid grid-cols-5 gap-2 items-center">
+                                        <span class="col-span-1 font-medium">In-Basket:</span>
+                                        <span class="col-span-1 text-center">45/day</span>
+                                        <span class="col-span-1 text-center">&times; 4 min</span>
+                                        <span class="col-span-1 text-center">&times; 22 days</span>
+                                        <span class="col-span-1 text-right font-bold">= 66.0 hours</span>
+                                    </div>
+                                    <!-- Scheduling -->
+                                    <div class="grid grid-cols-5 gap-2 items-center">
+                                        <span class="col-span-1 font-medium">Scheduling:</span>
+                                        <span class="col-span-1 text-center">15/day</span>
+                                        <span class="col-span-1 text-center">&times; 5 min</span>
+                                        <span class="col-span-1 text-center">&times; 22 days</span>
+                                        <span class="col-span-1 text-right font-bold">= 27.5 hours</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-3 border-t-2 border-dashed border-gray-300">
+                                    <div class="grid grid-cols-5 gap-2 items-center">
+                                         <span class="col-span-4 text-right font-bold text-[#1B365D]">Total Monthly Nurse Time:</span>
+                                         <span class="col-span-1 text-right font-extrabold text-lg text-[#1B365D]">158.0 hrs</span>
+                                    </div>
+                                     <div class="text-right text-gray-600 font-semibold">(≈ 0.91 FTE)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">2. Future State Model</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                This is a strategic and aspirational version of the model. It redesigns resource allocation by synthesizing insights from a comprehensive discovery process, including <strong>staff interviews, direct observations, and care model research.</strong> It also incorporates <strong>best practices from internal and external experts, such as those within the Department of Nursing.</strong> Every proposed change in the Future State Model is directly mapped to a pain point or theme identified by our teams. This creates a clear line of sight from an acknowledged problem to a data-driven solution, answering the question: <strong>"What resources would we need if we operated in an ideal, optimized state?"</strong>
+                            </p>
+                             <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <h4 class="font-semibold text-center text-gray-700 mb-4">Example: Future State Nursing Work (Reallocated Scheduling)</h4>
+                                <div class="space-y-3 text-sm">
+                                    <!-- Phone Calls -->
+                                    <div class="grid grid-cols-5 gap-2 items-center">
+                                        <span class="col-span-1 font-medium">Phone Calls:</span>
+                                        <span class="col-span-1 text-center">22/day</span>
+                                        <span class="col-span-1 text-center">&times; 8 min</span>
+                                        <span class="col-span-1 text-center">&times; 22 days</span>
+                                        <span class="col-span-1 text-right font-bold">= 64.5 hours</span>
+                                    </div>
+                                    <!-- In-Basket -->
+                                    <div class="grid grid-cols-5 gap-2 items-center">
+                                        <span class="col-span-1 font-medium">In-Basket:</span>
+                                        <span class="col-span-1 text-center">45/day</span>
+                                        <span class="col-span-1 text-center">&times; 4 min</span>
+                                        <span class="col-span-1 text-center">&times; 22 days</span>
+                                        <span class="col-span-1 text-right font-bold">= 66.0 hours</span>
+                                    </div>
+                                    <!-- Scheduling -->
+                                    <div class="grid grid-cols-5 gap-2 items-center relative">
+                                        <span class="col-span-1 font-medium text-gray-400 line-through">Scheduling:</span>
+                                        <span class="col-span-1 text-center text-gray-400 line-through">15/day</span>
+                                        <span class="col-span-1 text-center text-gray-400 line-through">&times; 5 min</span>
+                                        <span class="col-span-1 text-center text-gray-400 line-through">&times; 22 days</span>
+                                        <span class="col-span-1 text-right font-bold text-gray-400 line-through">= 27.5 hours</span>
+                                        <div class="absolute -right-2 top-1/2 -translate-y-1/2 bg-yellow-200 text-yellow-800 text-xs font-semibold px-2 py-0.5 rounded-full">Reallocated</div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-3 border-t-2 border-dashed border-gray-300">
+                                    <div class="grid grid-cols-5 gap-2 items-center">
+                                         <span class="col-span-4 text-right font-bold text-[#007FA3]">New Total Monthly Time:</span>
+                                         <span class="col-span-1 text-right font-extrabold text-lg text-[#007FA3]">130.5 hrs</span>
+                                    </div>
+                                    <div class="text-right text-gray-600 font-semibold">(≈ 0.75 FTE)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section>
+                     <h2 class="text-2xl font-bold text-[#1B365D] mb-4">What The Resource Model Delivers</h2>
+                     <p class="text-gray-700 leading-relaxed mb-4">Ultimately, the model is a powerful decision-making engine that provides clear, actionable insights.</p>
+                     <ul class="list-disc list-inside space-y-3">
+                        <li><strong>Precise Resource Quantification:</strong> It tells us exactly how many staff members of each role, what specific equipment, and how much clinical space are needed to meet patient demand.</li>
+                        <li><strong>Data-Driven Decision-Making:</strong> It replaces assumptions and anecdotal evidence with objective data, allowing leadership to make confident, defensible decisions about hiring, capital purchases, and space allocation.</li>
+                        <li>
+                            <strong>Dynamic Scenario Planning:</strong> The model is not a static document; it's a flexible forecasting tool. Both the Current State and Future State versions can be used to model various scenarios by adjusting variables like patient volume. This allows us to answer critical strategic questions from either perspective, such as:
+                            <ul class="list-disc list-inside mt-2 pl-6 space-y-1">
+                                <li>"What staffing increase is needed to support <strong>3% annual growth</strong> over the next five years?"</li>
+                                <li>"What resources are required to completely <strong>eliminate our current patient backlog</strong> in nine months?"</li>
+                                <li>"How would our resource needs change if we <strong>shifted to a new care delivery strategy</strong>?"</li>
+                            </ul>
+                        </li>
+                     </ul>
+                </section>
+
+                <!-- Final Notes Section -->
+                <section class="mt-12 pt-8 border-t-2 border-gray-200">
+                    <h2 class="text-2xl font-bold text-[#1B365D] mb-4">Final Notes on Methodology</h2>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Even though the examples above are targeted at staffing, the same methodology is relevant to both space and equipment. Additionally, staffing and FTE need not be limited to operational staff only, it can also be extended to allotted leader resourcing.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Further, the methodology can feasibly be extended to encompass even non-clinical areas. All that would be required in such cases is identifying a different work driver metric around which to model allocation of resources.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Critically, the resource model is built on a platform of commonly agreed-upon responsibilities, behaviors, and ultimately standard work. As more definition and alignment is added to this platform, the resource model becomes more and more accurate.
+                        </p>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-10 pt-6 border-t border-gray-300">
+            <p class="text-sm text-gray-500">Confidential Internal Document</p>
+        </footer>
+        
+    </div>
+
+</body>
+</html>

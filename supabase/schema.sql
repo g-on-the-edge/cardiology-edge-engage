@@ -10,6 +10,7 @@ CREATE TABLE public.users (
   email TEXT NOT NULL,
   full_name TEXT,
   avatar_url TEXT,
+  phone_number TEXT,  -- For Twilio SMS notifications
   role TEXT DEFAULT 'member' CHECK (role IN ('admin', 'owner', 'member', 'viewer')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -197,6 +198,32 @@ CREATE TABLE public.scorecard_metrics (
   last_updated TIMESTAMPTZ,
   updated_by UUID REFERENCES public.users(id),
   created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Notifications tracking
+CREATE TABLE public.notifications (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+  project_id UUID REFERENCES public.projects(id) ON DELETE CASCADE,
+  type TEXT NOT NULL CHECK (type IN ('file_upload', 'phase_completed', 'project_assignment', 'gate_passed', 'comment_added', 'general')),
+  message TEXT NOT NULL,
+  sent_via TEXT CHECK (sent_via IN ('sms', 'email', 'both')),
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'sent', 'failed', 'read')),
+  metadata JSONB DEFAULT '{}',
+  sent_at TIMESTAMPTZ,
+  read_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Notification preferences
+CREATE TABLE public.notification_preferences (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+  type TEXT NOT NULL,
+  enabled BOOLEAN DEFAULT TRUE,
+  via_sms BOOLEAN DEFAULT TRUE,
+  via_email BOOLEAN DEFAULT TRUE,
+  UNIQUE(user_id, type)
 );
 
 -- Scorecard value history

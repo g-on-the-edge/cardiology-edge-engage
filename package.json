@@ -14,7 +14,8 @@
     "framer-motion": "^11.15.0",
     "next": "^15.1.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "twilio": "^5.11.1"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.15.2",
