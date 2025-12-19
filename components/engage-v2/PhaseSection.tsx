@@ -8,6 +8,7 @@ interface Step {
   title: string;
   description: string;
   category: 'open' | 'narrow' | 'close';
+  audioSrc?: string;
 }
 
 interface Deliverable {
@@ -280,6 +281,7 @@ export function Phase2Section() {
       title: 'Teach Back & Gap Analysis',
       description: 'Connect internal pain points with external solutions and identify gaps.',
       category: 'open',
+      audioSrc: '/audio/teachback.mp3',
     },
     {
       id: '2.4',
@@ -434,6 +436,16 @@ export function Phase2Section() {
                         <h4 className="text-white font-semibold">{step.title}</h4>
                       </div>
                       <p className="text-white/60 text-sm">{step.description}</p>
+                      {step.audioSrc && (
+                        <audio
+                          controls
+                          className="mt-3 w-full h-10 rounded-lg"
+                          style={{ filter: 'invert(1) hue-rotate(180deg) brightness(0.9)' }}
+                        >
+                          <source src={step.audioSrc} type="audio/mpeg" />
+                          Your browser does not support the audio element.
+                        </audio>
+                      )}
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
                       <span className={`px-2 py-0.5 rounded text-xs font-bold uppercase ${colors.text} ${colors.border} border bg-white/5`}>
