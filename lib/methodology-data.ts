@@ -6,6 +6,7 @@ export interface Step {
   description: string;
   category: 'open' | 'narrow' | 'close';
   phase: number;
+  audioSrc?: string;
 }
 
 export interface Deliverable {
@@ -80,6 +81,7 @@ export const steps: Step[] = [
     description: 'Connect internal pain points with external solutions and identify gaps.',
     category: 'open',
     phase: 2,
+    audioSrc: '/audio/teachback.mp3',
   },
   {
     id: '2.4',

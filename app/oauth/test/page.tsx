@@ -1,16 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function OAuthTestPage() {
   const [clientId, setClientId] = useState('test_app');
   const [redirectUri, setRedirectUri] = useState('http://localhost:3000/callback');
   const [scope, setScope] = useState('read projects:read');
-  const [state, setState] = useState('test_state_' + Math.random().toString(36).substring(7));
+  const [state, setState] = useState('');
+  const [origin, setOrigin] = useState('');
+
+  useEffect(() => {
+    setState('test_state_' + Math.random().toString(36).substring(7));
+    setOrigin(window.location.origin);
+  }, []);
 
   const buildAuthUrl = () => {
-    const baseUrl = `${window.location.origin}/oauth/consent`;
+    if (!origin) return '#';
+    const baseUrl = `${origin}/oauth/consent`;
     const params = new URLSearchParams({
       client_id: clientId,
       redirect_uri: redirectUri,
@@ -126,7 +133,7 @@ export default function OAuthTestPage() {
 
             <div>
               <h3 className="font-semibold text-white mb-2">2. User Consent</h3>
-              <p className="text-sm">User reviews permissions and clicks "Authorize" or "Deny".</p>
+              <p className="text-sm">User reviews permissions and clicks &quot;Authorize&quot; or &quot;Deny&quot;.</p>
             </div>
 
             <div>

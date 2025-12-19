@@ -82,6 +82,18 @@ export default function InteractiveStep({
             {step.description}
           </p>
 
+          {/* Audio player for steps with audio */}
+          {step.audioSrc && (
+            <audio
+              controls
+              className="mt-3 w-full h-10 rounded-lg"
+              style={{ filter: 'invert(1) hue-rotate(180deg) brightness(0.9)' }}
+            >
+              <source src={step.audioSrc} type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          )}
+
           {/* Action bar - always visible but more prominent on hover */}
           <div className="flex items-center gap-3 mt-3 flex-wrap">
             <AssetButton

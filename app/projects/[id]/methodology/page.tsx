@@ -10,6 +10,7 @@ import { steps, deliverables, phaseInfo, getStepsByPhase, getDeliverablesByPhase
 import type { Project, StepProgress, Asset, AssetAttachment } from '@/types/database';
 import InteractiveStep from '@/components/project/InteractiveStep';
 import AssetModal from '@/components/project/AssetModal';
+import FileViewer from '@/components/project/FileViewer';
 
 export default function MethodologyPage() {
   const { id } = useParams();
@@ -17,8 +18,10 @@ export default function MethodologyPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [stepProgress, setStepProgress] = useState<Record<string, StepProgress>>({});
   const [stepAssets, setStepAssets] = useState<Record<string, Asset[]>>({});
+  const [deliverableAssets, setDeliverableAssets] = useState<Record<string, Asset[]>>({});
   const [isLoading, setIsLoading] = useState(true);
-  const [activeModal, setActiveModal] = useState<{ type: 'view' | 'add'; stepId: string } | null>(null);
+  const [activeModal, setActiveModal] = useState<{ type: 'view' | 'add'; targetId: string; targetType: 'step' | 'deliverable' } | null>(null);
+  const [viewingAsset, setViewingAsset] = useState<Asset | null>(null);
 
   // Refs for scroll tracking
   const phase1Ref = useRef<HTMLDivElement>(null);
@@ -62,8 +65,8 @@ export default function MethodologyPage() {
         setStepProgress(progressMap);
       }
 
-      // Fetch assets with attachments
-      const { data: attachmentsData } = await supabase
+      // Fetch step assets with attachments
+      const { data: stepAttachmentsData } = await supabase
         .from('asset_attachments')
         .select(`
           *,
@@ -71,9 +74,9 @@ export default function MethodologyPage() {
         `)
         .eq('attachable_type', 'step');
 
-      if (attachmentsData) {
+      if (stepAttachmentsData) {
         const assetsMap: Record<string, Asset[]> = {};
-        attachmentsData.forEach((att: any) => {
+        stepAttachmentsData.forEach((att: any) => {
           if (att.asset) {
             if (!assetsMap[att.attachable_id]) {
               assetsMap[att.attachable_id] = [];
@@ -82,6 +85,28 @@ export default function MethodologyPage() {
           }
         });
         setStepAssets(assetsMap);
+      }
+
+      // Fetch deliverable assets with attachments
+      const { data: deliverableAttachmentsData } = await supabase
+        .from('asset_attachments')
+        .select(`
+          *,
+          asset:assets(*)
+        `)
+        .eq('attachable_type', 'deliverable');
+
+      if (deliverableAttachmentsData) {
+        const assetsMap: Record<string, Asset[]> = {};
+        deliverableAttachmentsData.forEach((att: any) => {
+          if (att.asset) {
+            if (!assetsMap[att.attachable_id]) {
+              assetsMap[att.attachable_id] = [];
+            }
+            assetsMap[att.attachable_id].push(att.asset);
+          }
+        });
+        setDeliverableAssets(assetsMap);
       }
 
       setIsLoading(false);
@@ -158,12 +183,16 @@ export default function MethodologyPage() {
     });
   };
 
-  const handleViewAssets = (stepId: string) => {
-    setActiveModal({ type: 'view', stepId });
+  const handleViewAssets = (targetId: string, targetType: 'step' | 'deliverable' = 'step') => {
+    setActiveModal({ type: 'view', targetId, targetType });
   };
 
-  const handleAddAsset = (stepId: string) => {
-    setActiveModal({ type: 'add', stepId });
+  const handleAddAsset = (targetId: string, targetType: 'step' | 'deliverable' = 'step') => {
+    setActiveModal({ type: 'add', targetId, targetType });
+  };
+
+  const handleViewFile = (asset: Asset) => {
+    setViewingAsset(asset);
   };
 
   if (isLoading) {
@@ -253,11 +282,13 @@ export default function MethodologyPage() {
                   <DeliverableCard
                     key={deliverable.id}
                     deliverable={deliverable}
+                    assets={deliverableAssets[deliverable.id] || []}
                     gradient={phaseInfo[1].gradient}
                     accentColor={phaseInfo[1].accentColor}
                     isInView={phase1InView}
                     index={index}
-                    onAddAsset={() => handleAddAsset(deliverable.id)}
+                    onAddAsset={() => handleAddAsset(deliverable.id, 'deliverable')}
+                    onViewFile={handleViewFile}
                   />
                 ))}
               </div>
@@ -346,11 +377,13 @@ export default function MethodologyPage() {
                   <DeliverableCard
                     key={deliverable.id}
                     deliverable={deliverable}
+                    assets={deliverableAssets[deliverable.id] || []}
                     gradient={phaseInfo[2].gradient}
                     accentColor={phaseInfo[2].accentColor}
                     isInView={phase2InView}
                     index={index}
-                    onAddAsset={() => handleAddAsset(deliverable.id)}
+                    onAddAsset={() => handleAddAsset(deliverable.id, 'deliverable')}
+                    onViewFile={handleViewFile}
                   />
                 ))}
               </div>
@@ -394,11 +427,13 @@ export default function MethodologyPage() {
                   <DeliverableCard
                     key={deliverable.id}
                     deliverable={deliverable}
+                    assets={deliverableAssets[deliverable.id] || []}
                     gradient={phaseInfo[3].gradient}
                     accentColor={phaseInfo[3].accentColor}
                     isInView={phase3InView}
                     index={index}
-                    onAddAsset={() => handleAddAsset(deliverable.id)}
+                    onAddAsset={() => handleAddAsset(deliverable.id, 'deliverable')}
+                    onViewFile={handleViewFile}
                   />
                 ))}
               </div>
@@ -411,17 +446,34 @@ export default function MethodologyPage() {
       {activeModal && (
         <AssetModal
           projectId={id as string}
-          targetType="step"
-          targetId={activeModal.stepId}
+          targetType={activeModal.targetType}
+          targetId={activeModal.targetId}
           mode={activeModal.type}
-          assets={stepAssets[activeModal.stepId] || []}
+          assets={activeModal.targetType === 'step'
+            ? (stepAssets[activeModal.targetId] || [])
+            : (deliverableAssets[activeModal.targetId] || [])}
           onClose={() => setActiveModal(null)}
           onAssetAdded={(asset) => {
-            setStepAssets((prev) => ({
-              ...prev,
-              [activeModal.stepId]: [...(prev[activeModal.stepId] || []), asset],
-            }));
+            if (activeModal.targetType === 'step') {
+              setStepAssets((prev) => ({
+                ...prev,
+                [activeModal.targetId]: [...(prev[activeModal.targetId] || []), asset],
+              }));
+            } else {
+              setDeliverableAssets((prev) => ({
+                ...prev,
+                [activeModal.targetId]: [...(prev[activeModal.targetId] || []), asset],
+              }));
+            }
           }}
+        />
+      )}
+
+      {/* File Viewer */}
+      {viewingAsset && (
+        <FileViewer
+          asset={viewingAsset}
+          onClose={() => setViewingAsset(null)}
         />
       )}
     </div>
@@ -460,19 +512,63 @@ function PhaseHeader({ phase, info, isInView }: { phase: number; info: typeof ph
 // Deliverable Card Component
 function DeliverableCard({
   deliverable,
+  assets,
   gradient,
   accentColor,
   isInView,
   index,
   onAddAsset,
+  onViewFile,
 }: {
   deliverable: { id: string; title: string };
+  assets: Asset[];
   gradient: string;
   accentColor: string;
   isInView: boolean;
   index: number;
   onAddAsset: () => void;
+  onViewFile: (asset: Asset) => void;
 }) {
+  const getAssetIcon = (asset: Asset) => {
+    const isPdf = asset.type === 'document' || asset.mime_type === 'application/pdf' || asset.name?.endsWith('.pdf');
+    const isImage = asset.type === 'image' || asset.mime_type?.startsWith('image/');
+    const isVideo = asset.type === 'video' || asset.mime_type?.startsWith('video/');
+
+    if (isPdf) {
+      return (
+        <svg className="w-4 h-4 text-[#FF9F40]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      );
+    }
+    if (isImage) {
+      return (
+        <svg className="w-4 h-4 text-[#A8D4B8]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      );
+    }
+    if (isVideo) {
+      return (
+        <svg className="w-4 h-4 text-[#E85A6F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+      );
+    }
+    if (asset.type === 'link') {
+      return (
+        <svg className="w-4 h-4 text-[#3AACCF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+        </svg>
+      );
+    }
+    return (
+      <svg className="w-4 h-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+      </svg>
+    );
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 30 }}
@@ -490,12 +586,30 @@ function DeliverableCard({
         <button
           onClick={onAddAsset}
           className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-all"
+          title="Add asset"
         >
           <svg className="w-3.5 h-3.5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
         </button>
       </div>
+
+      {/* Asset icons row */}
+      {assets.length > 0 && (
+        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/10 flex-wrap">
+          {assets.map((asset) => (
+            <button
+              type="button"
+              key={asset.id}
+              onClick={() => onViewFile(asset)}
+              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all group/asset"
+              title={asset.name}
+            >
+              {getAssetIcon(asset)}
+            </button>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }

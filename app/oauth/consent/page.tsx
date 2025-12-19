@@ -1,12 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-[#0F1D2F] flex items-center justify-center">
+      <div className="text-white/60">Loading...</div>
+    </div>
+  );
+}
+
 export default function OAuthConsentPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <OAuthConsentContent />
+    </Suspense>
+  );
+}
+
+function OAuthConsentContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -21,22 +37,43 @@ export default function OAuthConsentPage() {
   const responseType = searchParams.get('response_type') || 'code';
 
   useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+      if (authError || !user) {
+        // Redirect to login with return URL
+        const returnUrl = `/oauth/consent?${searchParams.toString()}`;
+        router.push(`/login?redirect=${encodeURIComponent(returnUrl)}`);
+        return;
+      }
+
+      setUser(user);
+      setIsLoading(false);
+    };
+
     checkAuth();
-  }, []);
+  }, [searchParams, router]);
 
-  const checkAuth = async () => {
-    const supabase = createClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const generateAuthCode = () => {
+    return Array.from(crypto.getRandomValues(new Uint8Array(32)))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  };
 
-    if (authError || !user) {
-      // Redirect to login with return URL
-      const returnUrl = `/oauth/consent?${searchParams.toString()}`;
-      router.push(`/login?redirect=${encodeURIComponent(returnUrl)}`);
-      return;
-    }
+  const getScopeDescription = (scope: string) => {
+    const scopes = scope.split(' ');
+    const descriptions: Record<string, string> = {
+      read: 'View your profile and project information',
+      write: 'Create and modify projects on your behalf',
+      'projects:read': 'View your projects and project details',
+      'projects:write': 'Create, update, and delete projects',
+      'files:read': 'View files and assets in your projects',
+      'files:write': 'Upload and manage files in your projects',
+      'notifications:send': 'Send notifications to you',
+    };
 
-    setUser(user);
-    setIsLoading(false);
+    return scopes.map(s => descriptions[s] || `Access to ${s}`);
   };
 
   const handleApprove = async () => {
@@ -96,27 +133,6 @@ export default function OAuthConsentPage() {
     } else {
       router.push('/');
     }
-  };
-
-  const generateAuthCode = () => {
-    return Array.from(crypto.getRandomValues(new Uint8Array(32)))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
-  };
-
-  const getScopeDescription = (scope: string) => {
-    const scopes = scope.split(' ');
-    const descriptions: Record<string, string> = {
-      read: 'View your profile and project information',
-      write: 'Create and modify projects on your behalf',
-      'projects:read': 'View your projects and project details',
-      'projects:write': 'Create, update, and delete projects',
-      'files:read': 'View files and assets in your projects',
-      'files:write': 'Upload and manage files in your projects',
-      'notifications:send': 'Send notifications to you',
-    };
-
-    return scopes.map(s => descriptions[s] || `Access to ${s}`);
   };
 
   if (isLoading) {
