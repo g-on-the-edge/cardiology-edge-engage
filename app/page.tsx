@@ -10,8 +10,14 @@ export default function Home() {
         <p className="text-lg text-gray-600 mb-4">
           Edge Engage Execution Method applied to cardiology work at Gundersen Health System.
         </p>
-        <div className="mt-8">
-          <Link 
+        <div className="mt-8 flex gap-4">
+          <Link
+            href="/projects"
+            className="inline-block px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+          >
+            Project Workspace
+          </Link>
+          <Link
             href="/engage-method-v2"
             className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
