@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useAuth } from '@/components/providers/AuthProvider';
 import { createClient } from '@/lib/supabase/client';
 import type { Project, StepProgress, Activity } from '@/types/database';
+import InviteModal from '@/components/project/InviteModal';
 
 interface ProjectStats {
   totalSteps: number;
@@ -22,6 +23,7 @@ export default function ProjectPage() {
   const [stats, setStats] = useState<ProjectStats>({ totalSteps: 13, completedSteps: 0, assetsCount: 0, meetingsCount: 0 });
   const [recentActivity, setRecentActivity] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showInviteModal, setShowInviteModal] = useState(false);
 
   useEffect(() => {
     async function fetchProject() {
@@ -133,6 +135,15 @@ export default function ProjectPage() {
           </div>
 
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => setShowInviteModal(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#20B2A4] text-white text-sm hover:bg-[#1a9a8e] transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Invite Team
+            </button>
             <span className="text-white/60 text-sm">{user?.email}</span>
             <button
               onClick={signOut}
@@ -298,6 +309,17 @@ export default function ProjectPage() {
           </div>
         </motion.div>
       </main>
+
+      {/* Invite Modal */}
+      <InviteModal
+        projectId={id as string}
+        projectName={project.name}
+        isOpen={showInviteModal}
+        onClose={() => setShowInviteModal(false)}
+        onInvited={() => {
+          // Optionally refresh data or show notification
+        }}
+      />
     </div>
   );
 }
