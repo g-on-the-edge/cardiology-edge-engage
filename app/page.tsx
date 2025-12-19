@@ -15,13 +15,13 @@ export default function Home() {
             href="/projects"
             className="inline-block px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
           >
-            Project Workspace
+            Enter HeartBreak Through
           </Link>
           <Link
             href="/engage-method-v2"
             className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            View Edge Engage Method v2
+            View Edge Engage Execution Method
           </Link>
         </div>
       </div>
